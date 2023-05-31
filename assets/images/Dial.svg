@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <g transform="rotate(-90 100 100)">
+    <circle cx="100" cy="100" r="4" fill="red"/>
+    <path d="M100,100 L177,100 L170,92 L180,100 L170,108" fill="none" stroke="red" stroke-width="4" marker-end="url(#arrowhead)"/>
+  </g>
+</svg>
