@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterMapTileCaching.initialise();
+  await FMTC.instance('mapStore').manage.createAsync();
   runApp(const MyApp());
 }
 

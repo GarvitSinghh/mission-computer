@@ -46,7 +46,8 @@ dependencies:
   provider: ^6.0.5
   shared_preferences: ^2.1.1
   toggle_switch: ^2.1.0
-
+  fmtc_plus_background_downloading: ^8.0.0
+  
 
 
 dev_dependencies:

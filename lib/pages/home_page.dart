@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mission_comp/pages/compass.dart';
+import 'package:mission_comp/pages/download_map_page.dart';
 import 'package:mission_comp/pages/map_screen.dart';
 import 'package:mission_comp/pages/mission_plan_page.dart';
 import 'package:mission_comp/pages/satellite_page.dart';
@@ -19,7 +20,7 @@ class HomePage extends StatelessWidget {
     const TileItem(nextPage: Compass(), text: "Compass"),
     const TileItem(nextPage: MapScreen(), text: "Map"),
     const TileItem(nextPage: SatellitePage(), text: "Satellite"),
-    const TileItem(text: "Ground Wind"),
+    TileItem(nextPage: DownloadMapScreen(), text: "Download Map"),
     const TileItem(nextPage: MissionPlanPage(), text: "Mission Plan"),
     const TileItem(nextPage: TeamPage(), text: "Team"),
     const TileItem(text: "Recovery"),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
@@ -22,11 +23,19 @@ class _MapScreenState extends State<MapScreen> {
   double? m2;
   double? bearing;
 
+  // final String urlTemplate = 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png';
+  // final String urlTemplate = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
+  // final String urlTemplate = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+  // final String urlTemplate = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  final String urlTemplate =
+      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png';
+  double mapZoom = 16;
+
   @override
   void initState() {
     super.initState();
     _timer = Timer.periodic(
-      const Duration(seconds: 1),
+      const Duration(milliseconds: 10),
       (_) => _getCurrentLocation(),
     );
   }
@@ -108,14 +117,14 @@ class _MapScreenState extends State<MapScreen> {
           FlutterMap(
             mapController: _mapController,
             options: MapOptions(
-              center: _currentLocation ?? LatLng(0, 0),
-              zoom: 10.0,
+              center: _currentLocation ?? LatLng(28.75, 77.13),
+              zoom: mapZoom,
             ),
             children: [
               TileLayer(
-                urlTemplate:
-                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                // urlTemplate: FMTC.instance('mapStore'),
                 subdomains: const ['a', 'b', 'c'],
+                tileProvider: FMTC.instance('mapStore').getTileProvider(),
               ),
               MarkerLayer(
                 markers: [
