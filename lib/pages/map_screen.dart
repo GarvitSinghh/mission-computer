@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'package:flutter_svg/svg.dart';
 import 'dart:math' as math;
+import 'package:flutter_compass/flutter_compass.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -26,6 +27,9 @@ class _MapScreenState extends State<MapScreen> {
   double? m2;
   double? bearing;
   num? distance;
+
+  double? dir = 0.0;
+
   // final String urlTemplate = 'https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png';
   // final String urlTemplate = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
   // final String urlTemplate = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
@@ -37,6 +41,14 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+
+    FlutterCompass.events?.listen((CompassEvent event) {
+      setState(() {
+        dir = event.heading;
+        print("HELLO MAI DIRECTION HU => $dir");
+      });
+    });
+
     _timer = Timer.periodic(
       const Duration(milliseconds: 10),
       (_) => _getCurrentLocation(),
@@ -71,7 +83,7 @@ class _MapScreenState extends State<MapScreen> {
           position.longitude);
       m2 = Geolocator.bearingBetween(position.latitude, position.longitude,
           target?.latitude ?? 0, target?.longitude ?? 0);
-      bearing = ((m1 ?? 0) - (m2 ?? 0)) % 360;
+      bearing = ((m2 ?? 0) - (dir ?? 0)) % 360;
       bearing =
           (((bearing ?? 0) < 0) ? ((bearing ?? 0) + 360) : (bearing ?? 0));
       num lat1 = _currentLocation!.latitude;
@@ -280,7 +292,7 @@ class _MapScreenState extends State<MapScreen> {
         Container(
           alignment: Alignment.center,
           child: Transform.rotate(
-            angle: (bearing ?? 0) * (math.pi / 180),
+            angle: (target != null) ? ((bearing ?? 0) * (math.pi / 180)) : (0),
             child: SvgPicture.asset(
                 height: MediaQuery.of(context).size.width - 50,
                 "assets/images/Dial.svg",
@@ -292,7 +304,9 @@ class _MapScreenState extends State<MapScreen> {
           left: 50,
           child: Container(
             child: Text(
-              '${(((bearing ?? 0) > 180) ? (360 - (bearing ?? 0)) : (bearing ?? 0)).round()}',
+              (target != null)
+                  ? '${(((bearing ?? 0) > 180) ? (360 - (bearing ?? 0)) : (bearing ?? 0)).round()}'
+                  : '0',
               style: const TextStyle(color: Colors.white),
             ),
           ),
